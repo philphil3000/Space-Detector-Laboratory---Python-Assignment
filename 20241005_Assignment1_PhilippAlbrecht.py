@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 #import modules 
 import numpy as np 
 import matplotlib.pyplot as plt 
 from scipy.optimize import curve_fit
+
 
 #prepare data 
 #add each line of spectrum.txt to a list. exclude information in the first couple of lines  
@@ -35,13 +34,10 @@ def split_list():
 
 split_list()
 
+
 # turn wavelength list and flux list into arrays. Note: There is probably a simpler way of doing this - optimization potential 
 w_array = np.array(wlist) #wavelength (x-axis)
 f_array = np.array(flist) #flux (y-axis) 
-
-
-
-# In[2]:
 
 
 #extract values within a defined range. The following two functions were copied from the Brightspace document 'fitting-to-spectra-2102'
@@ -61,10 +57,6 @@ def filter_in_interval(x, y, xmin, xmax):
 #create arrays that only include the region of interest 
 ROI = (6680, 6695)     #ROI estimated based on plot of measurement data. area that includes the measurement peak 
 _w_array, _f_array = filter_in_interval(w_array, f_array, *ROI) 
-
-
-
-# In[3]:
 
 
 #define polynomial, gaussian and combined function for the fitting curve 
@@ -92,10 +84,6 @@ popt, pcov = curve_fit(combined_function, w_array, f_array, p0=initial_guess) #T
 
 b, c, d, e = popt[:4]     #optimized parameters for polynomial function for continuum 
 mu, sig, a = popt[4:]     #optimized parameters for polynomial function for gaussian 
-
-
-
-# In[4]:
 
 
 #plot the measurement data 
@@ -140,16 +128,5 @@ ax.text(1.1, 0.95, parameters_text1 + "\n" + parameters_text2, transform=ax.tran
 plt.show()
 
 
-
-# In[5]:
-
-
 print(parameters_text1)
 print(parameters_text2)
-
-
-# In[ ]:
-
-
-
-
